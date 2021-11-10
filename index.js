@@ -33,12 +33,30 @@ async function run() {
       res.json(result);
     });
 
-     //get all products api
+     //get all products
      app.get("/products", async (req, res) => {
       const cursor = productCollection.find({});
       const products = await cursor.toArray();
       res.send(products);
     });
+
+    //get a single product
+    app.get('/products/:productid', async(req,res) => {
+      const productid = req.params.productid;
+      const query = { _id: ObjectId(productid)};
+      const product = await productCollection.findOne(query);
+      console.log("load user with id", product);
+      res.send(product);
+    })
+
+      //confirm order
+      app.post("/placeorder", async (req, res) => {
+        const orderProduct = req.body;
+        const result = await orderCollection.insertOne(orderProduct);
+        console.log("order placed", req.body);
+        console.log("successfully ordered", result);
+        res.json(result);
+      });
 
 
     console.log('connected to Doggo database');
