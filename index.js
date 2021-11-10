@@ -25,6 +25,13 @@ async function run() {
     const reviewCollection = database.collection("reviews");
     const userCollection = database.collection("users");
 
+     //get all products api
+     app.get("/products", async (req, res) => {
+      const cursor = productCollection.find({});
+      const products = await cursor.toArray();
+      res.send(products);
+    });
+
 
     console.log('connected to Doggo database');
   }
