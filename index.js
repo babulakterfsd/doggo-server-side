@@ -25,6 +25,14 @@ async function run() {
     const reviewCollection = database.collection("reviews");
     const userCollection = database.collection("users");
 
+    //post all users data to users collection
+    app.post('/users', async (req, res) => {
+      const user = req.body;
+      const result = await userCollection.insertOne(user);
+      console.log(result);
+      res.json(result);
+    });
+
      //get all products api
      app.get("/products", async (req, res) => {
       const cursor = productCollection.find({});
