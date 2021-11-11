@@ -60,6 +60,15 @@ async function run() {
       res.json(result);
     });
 
+    //add user review
+    app.post("/review", async (req, res) => {
+      const review = req.body;
+      const result = await reviewCollection.insertOne(review);
+      console.log("review added", req.body);
+      console.log("successfully added review", result);
+      res.json(result);
+    });
+
     //get all order
     app.get("/allorder", async (req, res) => {
       const cursor = orderCollection.find({});
