@@ -60,6 +60,13 @@ async function run() {
       res.json(result);
     });
 
+    //get all review
+    app.get("/review", async (req, res) => {
+      const cursor = reviewCollection.find({});
+      const reviews = await cursor.toArray();
+      res.send(reviews);
+    });
+
     //add user review
     app.post("/review", async (req, res) => {
       const review = req.body;
