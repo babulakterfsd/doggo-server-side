@@ -95,19 +95,33 @@ async function run() {
       res.json(result);
     });
 
-    
-       // add a product
-       app.post("/addproduct", async (req, res) => {
-        const newProduct = req.body;
-        const result = await productCollection.insertOne(newProduct);
-        console.log("got new product", req.body);
-        console.log("successfully added product", result);
-        res.json(result);
-      });
+    // add a product
+    app.post("/addproduct", async (req, res) => {
+      const newProduct = req.body;
+      const result = await productCollection.insertOne(newProduct);
+      console.log("got new product", req.body);
+      console.log("successfully added product", result);
+      res.json(result);
+    });
 
-
-
-
+    //update order status
+    app.put("/allorder/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(req.body);
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const productUpdate = {
+        $set: {
+          status: "shipped",
+        },
+      };
+      const result = await orderCollection.updateOne(
+        filter,
+        productUpdate,
+        options
+      );
+      res.json(result);
+    });
 
     console.log("connected to Doggo database");
   } finally {
