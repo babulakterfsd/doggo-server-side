@@ -66,12 +66,21 @@ async function run() {
       res.json(result);
     });
 
-    //get all product
+    //get products
     app.get("/products", async (req, res) => {
-      const cursor = productCollection.find({});
-      const products = await cursor.toArray();
-      res.send(products);
-    });
+      const limit = +req.query.limit;
+      let result;
+      if (limit) {
+          result = await productCollection
+              .find({})
+              .sort({ _id: -1 })
+              .limit(limit)
+              .toArray();
+      } else {
+          result = await productCollection.find({}).sort({ _id: -1 }).toArray();
+      }
+      res.json(result);
+  });
 
     // get a single product
     app.get("/products/:productid", async (req, res) => {
