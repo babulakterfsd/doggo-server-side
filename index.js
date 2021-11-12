@@ -73,7 +73,7 @@ async function run() {
       res.send(products);
     });
 
-    //get a single product
+    // get a single product
     app.get("/products/:productid", async (req, res) => {
       const productid = req.params.productid;
       const query = { _id: ObjectId(productid) };
@@ -113,6 +113,19 @@ async function run() {
       const services = await cursor.toArray();
       res.json(services);
     });
+
+    // check admin role 
+    app.get('/users/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const user = await userCollection.findOne(query);
+      let isAdmin = false;
+      if (user?.role === 'admin') {
+          isAdmin = true;
+      }
+      res.json({ admin: isAdmin })
+  })
+
 
     // get my orders
     app.get("/myorders/:email", async (req, res) => {
