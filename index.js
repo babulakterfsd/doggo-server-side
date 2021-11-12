@@ -35,6 +35,22 @@ async function run() {
       res.json(result);
     });
 
+     // google user and upsert user 
+     app.put("/users", async (req, res) => {
+      const user = req.body;
+      console.log(user)
+      const filter = { email: user.email };
+      const options = { upsert: true };
+      const updateUser = { $set: user };
+      const result = await userCollection.updateOne(
+          filter,
+          updateUser,
+          options
+      );
+      res.json(result);
+  });
+
+
     //get all products
     app.get("/products", async (req, res) => {
       const cursor = productCollection.find({});
