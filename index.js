@@ -51,7 +51,7 @@ async function run() {
   });
 
 
-    //get all products
+    //get all product
     app.get("/products", async (req, res) => {
       const cursor = productCollection.find({});
       const products = await cursor.toArray();
