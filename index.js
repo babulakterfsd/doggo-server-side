@@ -27,28 +27,19 @@ async function run() {
     const reviewCollection = database.collection("reviews");
     const userCollection = database.collection("users");
 
-    //post all users data to users collection
-    app.post("/users", async (req, res) => {
-      const user = req.body;
-      const result = await userCollection.insertOne(user);
-      console.log(result);
-      res.json(result);
-    });
+    //put user to the db
+    app.put("/users", async(req,res) => {
+        const userData = req.body;
+        const filter = {email: userData.email};
+        const options = {upsert: true};
+        const updatedUser = {
+          $set: {...userData}
+        }
+        const result = await userCollection.updateOne(filter, updatedUser, options);
+        res.json(result)
+    })
 
-    // google user and upsert user
-    app.put("/users", async (req, res) => {
-      const user = req.body;
-      console.log(user);
-      const filter = { email: user.email };
-      const options = { upsert: true };
-      const updateUser = { $set: user };
-      const result = await userCollection.updateOne(
-        filter,
-        updateUser,
-        options
-      );
-      res.json(result);
-    });
+
 
     // get all users
     app.get("/users", async (req, res) => {
