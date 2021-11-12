@@ -35,21 +35,45 @@ async function run() {
       res.json(result);
     });
 
-     // google user and upsert user 
-     app.put("/users", async (req, res) => {
+    // google user and upsert user
+    app.put("/users", async (req, res) => {
       const user = req.body;
-      console.log(user)
+      console.log(user);
       const filter = { email: user.email };
       const options = { upsert: true };
       const updateUser = { $set: user };
       const result = await userCollection.updateOne(
-          filter,
-          updateUser,
-          options
+        filter,
+        updateUser,
+        options
       );
       res.json(result);
-  });
+    });
 
+    // get all users
+    app.get("/users", async (req, res) => {
+      const cursor = userCollection.find({});
+      const allUser = await cursor.toArray();
+      res.json(allUser);
+    });
+
+    //update user role to admin
+    app.put("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const roleUpdate = {
+        $set: {
+          role: "admin",
+        },
+      };
+      const result = await userCollection.updateOne(
+        filter,
+        roleUpdate,
+        options
+      );
+      res.json(result);
+    });
 
     //get all product
     app.get("/products", async (req, res) => {
