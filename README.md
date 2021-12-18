@@ -8,7 +8,7 @@
 
 
 #### Technolgy I've Used: 
-- Users will see their dashboard and admin will see admin dashboard differently.
+- Users will see their dashboard and admin will see admin dashboard differently. 
 - I created some api's here to fetch data from database
 - I used mongodb as database
 - express is used here to make the task easier.
